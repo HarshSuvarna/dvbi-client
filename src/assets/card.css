@@ -1,0 +1,78 @@
+.show-rail {
+  background-color: rgb(231, 231, 243);
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 15rem;
+  /* align-items: center;
+  justify-content: center; */
+  overflow-x: auto;
+  border-radius: 5px;
+  /* overflow-y:hidden; */
+}
+
+.video-player {
+  position: fixed;
+  top: 30%;
+  right: 26%;
+  z-index: 100;
+}
+
+.dark-background {
+  background-color: rgba(15, 15, 15, 0.639);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+  z-index: 70;
+}
+
+.channel-name-button-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 0px 20px;
+  gap: 25px;
+}
+
+button {
+  background-color: antiquewhite;
+}
+
+.no-epg-message {
+  background-color: rgb(231, 231, 243);
+  width: 100%;
+  overflow-x: scroll;
+  color: rgb(91, 91, 91);
+  /* overflow-y: hidden; */
+  height: 11rem;
+  font-size: 30px;
+}
+
+.card {
+  background-color: rgb(39, 39, 39);
+  width: 150px;
+  height: 60%;
+  border-radius: 10px;
+  color: black;
+}
+
+.card p {
+  z-index: 50;
+  color: white;
+  font-weight: 700;
+  text-align: start;
+}
+
+.program-image {
+  height: 120px;
+  object-fit: fill;
+  width: 213px;
+  /* position: absolute; */
+}
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
