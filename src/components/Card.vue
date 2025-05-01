@@ -2,7 +2,8 @@
 import "../assets/card.css";
 import { recordProgram } from "../service/dvbi.service";
 
-const props = defineProps(["program"]);
+const props = defineProps(["program", "manifest"]);
+console.log(props.program);
 const programId = props.program["@programId"];
 const imageURL =
   props.program.BasicDescription.RelatedMaterial.MediaLocator.MediaUri["#text"];
@@ -23,13 +24,19 @@ const getStartTime = (time) => {
 };
 
 const downloadProgram = async () => {
-  const reponse = await recordProgram({
-    programId,
-    programTitle: loadTitle(programInfo?.Title),
-    schedule: props.program.schedule,
-    duration: props.program.duration,
-  });
-  console.log("reponse: ", reponse);
+  if (props.manifest.length) {
+    const reponse = await recordProgram({
+      programId,
+      programTitle: loadTitle(programInfo?.Title),
+      schedule: props.program.schedule,
+      duration: props.program.duration,
+      manifest: props.manifest,
+    });
+    console.log("reponse: ", reponse);
+  } else {
+    alert("This service doesn't have a manifest");
+    console.log("This service doesn't have a manifest");
+  }
 };
 </script>
 
