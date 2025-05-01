@@ -5,5 +5,5 @@ export const getServices = () => {
 };
 
 export const recordProgram = (programInfo) => {
-  return axios.post("/record-service", programInfo);
+  return axios.post("/service/record-service", programInfo);
 };

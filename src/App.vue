@@ -58,7 +58,7 @@ const getManifest = (channel) => {
     : channel.ServiceInstance;
 
   const manifest =
-    instance?.DASHDeliveryParameters.UriBasedLocation["dvbi-types:URI"];
+    instance?.DASHDeliveryParameters?.UriBasedLocation["dvbi-types:URI"];
 
   return manifest ? manifest : "";
 };
@@ -101,7 +101,7 @@ onMounted(async () => {
       <ShowRail
         v-if="getProgramInfo(channel) && getSchedule(channel)"
         :programDescription="getProgramInfo(channel)"
-        :schedule="channel"
+        :schedule="getSchedule(channel)"
         :manifest="getManifest(channel)"
       />
       <div v-else class="no-epg-message center">

@@ -3,14 +3,13 @@ import "../assets/card.css";
 import { recordProgram } from "../service/dvbi.service";
 
 const props = defineProps(["program", "manifest"]);
-console.log(props.program);
 const programId = props.program["@programId"];
 const imageURL =
   props.program.BasicDescription.RelatedMaterial.MediaLocator.MediaUri["#text"];
 const programInfo = props?.program?.BasicDescription;
 const loadTitle = (t) => (Array.isArray(t) ? getEnglishTitle(t) : t["#text"]);
 const startTime = props?.program?.schedule;
-const duration = props?.program?.duration.slice(2);
+const duration = props?.program?.duration?.slice(2);
 
 const getEnglishTitle = (t) =>
   t.find((l) => l["@xml:lang"] == undefined || l["@xml:lang"] === "en")[
@@ -18,8 +17,8 @@ const getEnglishTitle = (t) =>
   ];
 
 const getStartTime = (time) => {
-  const hour = time.slice(14, 16);
-  const min = time.slice(17, 19);
+  const hour = time?.slice(14, 16);
+  const min = time?.slice(17, 19);
   return `${hour}:${min}`;
 };
 
