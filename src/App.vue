@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, toRaw } from "vue";
-import { getServices, getEpgData } from "./service/dvbi.service";
+import { getServices } from "./service/dvbi.service";
 // import dashjs from "dashjs";
 import { MediaPlayer } from "https://cdn.dashjs.org/v5.0.0/modern/esm/dash.all.min.js";
 import ShowRail from "./components/Show-list.vue";
@@ -32,6 +32,10 @@ const getSchedule = (channel) => {
     : cgs;
 };
 
+// const getManifest = ()=>{
+//   channel = to
+// }
+
 const getProgramInfo = (channel) => {
   channel = toRaw(channel);
   const cgs = toRaw(serviceJson.value)[channel?.ContentGuideServiceRef];
@@ -46,6 +50,18 @@ const displayChannelName = (channel) =>
     ? channel.ServiceName.find((n) => n["@xml:lang"] === "en")?.["#text"] ||
       channel.ServiceName[0]["#text"]
     : channel.ServiceName;
+
+const getManifest = (channel) => {
+  channel = toRaw(channel);
+  const instance = Array.isArray(channel.ServiceInstance)
+    ? channel.ServiceInstance[0]
+    : channel.ServiceInstance;
+
+  const manifest =
+    instance?.DASHDeliveryParameters.UriBasedLocation["dvbi-types:URI"];
+
+  return manifest ? manifest : "";
+};
 
 const playChannel = (channel) => {
   toggleVideoPlayer();
@@ -85,21 +101,21 @@ onMounted(async () => {
       <ShowRail
         v-if="getProgramInfo(channel) && getSchedule(channel)"
         :programDescription="getProgramInfo(channel)"
-        :schedule="getSchedule(channel)"
+        :schedule="channel"
+        :manifest="getManifest(channel)"
       />
       <div v-else class="no-epg-message center">
         <h4>This is a test stream. No EPG available for this service.</h4>
       </div>
     </div>
-    <div v-if="playVideo">
-    </div>
-      <video
-        v-show="playVideo"
-        ref="videoPlayer"
-        controls
-        style="margin-top: 20px; width: 640px; height: 360px"
-        class="video-player"
-      ></video>
+    <div v-if="playVideo"></div>
+    <video
+      v-show="playVideo"
+      ref="videoPlayer"
+      controls
+      style="margin-top: 20px; width: 640px; height: 360px"
+      class="video-player"
+    ></video>
     <div
       v-if="playVideo"
       @click="toggleVideoPlayer()"
