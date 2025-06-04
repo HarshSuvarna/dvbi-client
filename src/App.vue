@@ -5,9 +5,34 @@ import { getServices } from "./service/dvbi.service";
 import { MediaPlayer } from "https://cdn.dashjs.org/v5.0.0/modern/esm/dash.all.min.js";
 import ShowRail from "./components/Show-list.vue";
 import { ssrLooseEqual } from "vue/server-renderer";
+import Hls from "hls.js";
 // const channels = ref([]);
 // const schedule = ref([]);
 // const seletedStreamUrl = ref("");
+
+const video = ref(null);
+
+const event_id = "44414"
+const manifestUrl = `http://10.3.0.229:8080/manifest/get-manifest/${event_id}`; // Replace with your Flask API
+
+onMounted(() => {
+  if (Hls.isSupported()) {
+    const hls = new Hls({ startPosition: 0 });
+    hls.loadSource(manifestUrl);
+    hls.attachMedia(video.value);
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      video.value.play();
+    });
+  } else if (video.value.canPlayType("application/vnd.apple.mpegurl")) {
+    // video.value.src = "http://10.3.0.229:8080/manifest/get-manifest/44413:"
+    video.value.addEventListener("loadedmetadata", () => {
+      video.value.play();
+    });
+  } else {
+    alert("HLS not supported in this browser.");
+  }
+});
+
 const videoPlayer = ref(null);
 let channels = ref([]);
 const serviceJson = ref(null);
@@ -81,14 +106,19 @@ const playChannel = (channel) => {
   }
 };
 
-onMounted(async () => {
-  await fetchData();
-});
+// onMounted(async () => {
+//   await fetchData();
+// });
 </script>
 
 <template>
   <div>
+    <h2>HLS Stream</h2>
+    <video ref="video" width="640" height="360" controls></video>
+  </div>
+  <!-- <div>
     <h1>DVB-I Channel List</h1>
+    <div class="">hafdasf</div>
     <div
       v-for="channel in channels"
       :key="channel.UniqueIdentifier"
@@ -121,5 +151,5 @@ onMounted(async () => {
       @click="toggleVideoPlayer()"
       class="dark-background"
     ></div>
-  </div>
+  </div> -->
 </template>
