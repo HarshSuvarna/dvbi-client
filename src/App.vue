@@ -9,11 +9,12 @@ import Hls from "hls.js";
 // const channels = ref([]);
 // const schedule = ref([]);
 // const seletedStreamUrl = ref("");
+import VideoPlayer from "./components/Video-player.vue";
 
 const video = ref(null);
 
-const event_id = "44414"
-const manifestUrl = `http://10.3.0.229:8080/manifest/get-manifest/${event_id}`; // Replace with your Flask API
+const event_id = "42544";
+const manifestUrl = ` http://10.3.0.229/edge/manifest/${event_id}`;
 
 onMounted(() => {
   if (Hls.isSupported()) {
@@ -114,7 +115,13 @@ const playChannel = (channel) => {
 <template>
   <div>
     <h2>HLS Stream</h2>
-    <video ref="video" width="640" height="360" controls></video>
+    <!-- <video ref="video" width="640" height="360" controls></video> -->
+    <!-- <div> -->
+      <!-- VOD -->
+      <!-- <VideoPlayer src="http://10.3.0.229/edge/manifest/97414" /> -->
+      <!-- LIVE -->
+      <VideoPlayer src="http://10.3.0.229/edge/manifest/live/1" />
+    <!-- </div> -->
   </div>
   <!-- <div>
     <h1>DVB-I Channel List</h1>
